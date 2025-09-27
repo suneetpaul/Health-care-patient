@@ -6,8 +6,8 @@
     <title>HpCheck - Symptom Checker</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
-    <style>
-    </style>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
     <header>
@@ -572,13 +572,12 @@
             }
         });
     </script>
-    <!-- Add this inside <head> -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+ 
 
 <script>
   // Initialize Supabase
-  const SUPABASE_URL = "https://YOUR_PROJECT_ID.supabase.co"; // replace
-  const SUPABASE_KEY = "YOUR_ANON_KEY"; // replace
+  const SUPABASE_URL = "https://kduodsoroxiqaaogknka.supabase.co";
+  const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtkdW9kc29yb3hpcWFhb2drbmthIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjY4OTQsImV4cCI6MjA3NDU0Mjg5NH0.fL98JA__xRHe31-cPwdIyTC1kG_4kcrZw9yHLX9WWBE";
   const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
   let currentUser = null;
@@ -678,4 +677,5 @@
 </body>
 
 </html>
+
 
