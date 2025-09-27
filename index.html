@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HpCheck - Symptom Checker</title>
+    <title>HpCheck - AI Symptom Checker</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2a7de1">
     <link rel="stylesheet" href="style.css">
-    
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="script.js"></script>
 </head>
 <body>
     <header>
@@ -142,35 +143,127 @@
                     </div>
                 </div>
                 
+                <!-- Health Metrics -->
                 <div class="card">
-                    <h2>Select a Health Concern</h2>
-                    <p>Choose from the options below to get information about common health issues</p>
-                    
-                    <div class="disease-options">
-                        <div class="disease-option" onclick="selectDisease('headache')">
-                            <i class="fas fa-head-side-cough"></i>
-                            <h3>Headache & Fever</h3>
-                            <p>Common symptoms and remedies</p>
+                    <h2>Health Overview</h2>
+                    <div class="health-metrics">
+                        <div class="metric-card">
+                            <h3><i class="fas fa-heartbeat"></i> Wellness Score</h3>
+                            <p style="font-size: 2rem; font-weight: bold;">85%</p>
+                            <p>Based on your recent activity</p>
                         </div>
-                        
-                        <div class="disease-option" onclick="selectDisease('skin')">
-                            <i class="fas fa-allergies"></i>
-                            <h3>Skin Problems</h3>
-                            <p>Rashes, allergies, and skin conditions</p>
+                        <div class="metric-card">
+                            <h3><i class="fas fa-pills"></i> Medications</h3>
+                            <p style="font-size: 2rem; font-weight: bold;" id="medCount">0</p>
+                            <p>Active reminders</p>
                         </div>
-                        
-                        <div class="disease-option" onclick="selectDisease('dental')">
-                            <i class="fas fa-tooth"></i>
-                            <h3>Dental Problems</h3>
-                            <p>Toothaches, gum issues, and oral health</p>
-                        </div>
-                        
-                        <div class="disease-option" onclick="selectDisease('pain')">
-                            <i class="fas fa-bone"></i>
-                            <h3>Back Pain & Cramps</h3>
-                            <p>Muscle pain, cramps, and joint issues</p>
+                        <div class="metric-card">
+                            <h3><i class="fas fa-calendar-check"></i> Check-ups</h3>
+                            <p style="font-size: 2rem; font-weight: bold;">2</p>
+                            <p>This month</p>
                         </div>
                     </div>
+                </div>
+                
+                <!-- Emergency Triage System -->
+                <div id="emergency-triage" class="card">
+                    <h2><i class="fas fa-first-aid"></i> Emergency Triage</h2>
+                    <div class="triage-system">
+                        <div class="triage-level triage-red">
+                            <h4>🚨 RED: Seek Immediate Care</h4>
+                            <p>Chest pain, difficulty breathing, severe bleeding, loss of consciousness</p>
+                        </div>
+                        <div class="triage-level triage-yellow">
+                            <h4>⚠️ YELLOW: Urgent Care Needed</h4>
+                            <p>High fever, severe pain, dehydration, worsening chronic conditions</p>
+                        </div>
+                        <div class="triage-level triage-green">
+                            <h4>✅ GREEN: Self-Care Possible</h4>
+                            <p>Minor aches, cold symptoms, mild allergies, routine concerns</p>
+                        </div>
+                    </div>
+                    
+                    
+                    </div>
+                </div>
+                
+                <!-- AI Symptom Checker -->
+                <button id="symptom-toggle-btn" class="btn btn-primary" onclick="toggleSymptomChecker()">
+    <i class="fas fa-robot"></i> Symptom Checker
+</button>
+
+<div id="symptom-checker" class="card">
+    <h2>AI Symptom Checker</h2>
+    <div class="symptom-selector">
+        <h3>Select your symptoms:</h3>
+        <div class="symptom-options">
+            <label><input type="checkbox" value="headache"> Headache</label>
+            <label><input type="checkbox" value="fever"> Fever</label>
+            <label><input type="checkbox" value="cough"> Cough</label>
+            <label><input type="checkbox" value="rash"> Skin Rash</label>
+            <label><input type="checkbox" value="chest_pain"> Chest Pain</label>
+            <label><input type="checkbox" value="shortness_of_breath"> Shortness of Breath</label>
+            <label><input type="checkbox" value="nausea"> Nausea</label>
+        </div>
+        <button onclick="analyzeSymptoms()" class="btn btn-primary">Analyze Symptoms</button>
+    </div>
+    <div id="analysis-result" style="display: none; margin-top: 20px;"></div>
+</div>
+
+                <!-- Traditional Disease Selection -->
+                <div id="traditional-options">
+                    <div class="card">
+                        <h2>Select a Health Concern</h2>
+                        <p>Choose from the options below to get information about common health issues</p>
+                        
+                        <div class="disease-options">
+                            <div class="disease-option" onclick="selectDisease('headache')">
+                                <i class="fas fa-head-side-cough"></i>
+                                <h3>Headache & Fever</h3>
+                                <p>Common symptoms and remedies</p>
+                            </div>
+                            
+                            <div class="disease-option" onclick="selectDisease('skin')">
+                                <i class="fas fa-allergies"></i>
+                                <h3>Skin Problems</h3>
+                                <p>Rashes, allergies, and skin conditions</p>
+                            </div>
+                            
+                            <div class="disease-option" onclick="selectDisease('dental')">
+                                <i class="fas fa-tooth"></i>
+                                <h3>Dental Problems</h3>
+                                <p>Toothaches, gum issues, and oral health</p>
+                            </div>
+                            
+                            <div class="disease-option" onclick="selectDisease('pain')">
+                                <i class="fas fa-bone"></i>
+                                <h3>Back Pain & Cramps</h3>
+                                <p>Muscle pain, cramps, and joint issues</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Medication Reminder System -->
+                <div id="medication-reminder" class="card">
+                    <h2><i class="fas fa-pills"></i> Medication Reminder</h2>
+                    <div class="reminder-setup">
+                        <h3>Add Medication Reminder</h3>
+                        <div class="form-group">
+                            <label for="medName">Medication Name</label>
+                            <input type="text" id="medName" placeholder="e.g., Ibuprofen">
+                        </div>
+                        <div class="form-group">
+                            <label for="medDosage">Dosage</label>
+                            <input type="text" id="medDosage" placeholder="e.g., 200mg">
+                        </div>
+                        <div class="form-group">
+                            <label for="medTime">Time</label>
+                            <input type="time" id="medTime">
+                        </div>
+                        <button onclick="addReminder()" class="btn btn-primary">Add Reminder</button>
+                    </div>
+                    <div id="reminder-list" class="reminder-list"></div>
                 </div>
                 
                 <div id="disease-info" class="disease-info" style="display: none;">
@@ -184,10 +277,10 @@
             <div class="container">
                 <div class="card">
                     <h1>About HpCheck</h1>
-                    <p>HpCheck is a symptom checker designed to provide preliminary health information for common medical conditions. Our goal is to help users understand potential causes of their symptoms and guide them toward appropriate care.</p>
+                    <p>HpCheck is an AI-powered symptom checker designed to provide preliminary health information for common medical conditions. Our goal is to help users understand potential causes of their symptoms and guide them toward appropriate care.</p>
                     
                     <h2>How It Works</h2>
-                    <p>After creating an account and setting up your profile, you can select from common health concerns. Our system provides information about possible conditions, self-care tips, and when to seek medical attention.</p>
+                    <p>After creating an account and setting up your profile, you can use our AI symptom checker or browse common health concerns. Our system provides information about possible conditions, self-care tips, and when to seek medical attention.</p>
                     
                     <h2>Disclaimer</h2>
                     <p>HpCheck is not a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition.</p>
@@ -242,9 +335,9 @@
             </div>
         </div>
     </footer>
-
-    <script>
-        // Disease information database with medicine details
+<script>
+    
+        // Enhanced Disease information database
         const diseaseInfo = {
             headache: {
                 title: "Headache & Fever Symptoms",
@@ -384,6 +477,62 @@
             }
         };
 
+        // AI Symptom Checker Database
+        const symptomDatabase = {
+            'headache': { conditions: ['migraine', 'tension_headache', 'sinusitis'], severity: 2 },
+            'fever': { conditions: ['flu', 'common_cold', 'covid'], severity: 3 },
+            'cough': { conditions: ['common_cold', 'bronchitis', 'covid'], severity: 2 },
+            'rash': { conditions: ['allergy', 'eczema', 'contact_dermatitis'], severity: 2 },
+            'chest_pain': { conditions: ['anxiety', 'acid_reflux', 'heart_issue'], severity: 4 },
+            'shortness_of_breath': { conditions: ['asthma', 'anxiety', 'heart_issue'], severity: 4 },
+            'nausea': { conditions: ['food_poisoning', 'migraine', 'stomach_flu'], severity: 2 }
+        };
+
+        const conditionInfo = {
+            'common_cold': {
+                name: 'Common Cold',
+                description: 'Viral infection of the upper respiratory tract',
+                severity: 'low',
+                recommendations: ['Rest', 'Hydrate', 'Over-the-counter cold medicine'],
+                emergency: false
+            },
+            'flu': {
+                name: 'Influenza (Flu)',
+                description: 'Viral infection affecting respiratory system',
+                severity: 'medium',
+                recommendations: ['Rest', 'Hydrate', 'Antiviral medication if early'],
+                emergency: false
+            },
+            'covid': {
+                name: 'COVID-19',
+                description: 'Coronavirus infection',
+                severity: 'medium-high',
+                recommendations: ['Isolate', 'Test', 'Consult healthcare provider'],
+                emergency: false
+            },
+            'migraine': {
+                name: 'Migraine',
+                description: 'Severe headache often accompanied by nausea and sensitivity to light',
+                severity: 'medium',
+                recommendations: ['Rest in dark room', 'Hydrate', 'Pain medication', 'Avoid triggers'],
+                emergency: false
+            },
+            'heart_issue': {
+                name: 'Possible Cardiac Issue',
+                description: 'Could indicate serious heart condition',
+                severity: 'high',
+                recommendations: ['Seek immediate medical attention'],
+                emergency: true
+            },
+            'asthma': {
+                name: 'Asthma Attack',
+                description: 'Respiratory condition causing breathing difficulty',
+                severity: 'high',
+                recommendations: ['Use inhaler if available', 'Seek medical help if severe'],
+                emergency: true
+            }
+        };
+
         // User data
         let currentUser = null;
 
@@ -484,6 +633,7 @@
                 document.getElementById('userInfo').textContent = `Age: ${currentUser.profile.age} | Gender: ${currentUser.profile.gender}`;
                 document.getElementById('userAvatar').textContent = currentUser.profile.fullName.charAt(0).toUpperCase();
             }
+            updateReminderList();
         }
 
         // Update login state (show/hide login/logout buttons)
@@ -555,6 +705,218 @@
             diseaseInfoElement.scrollIntoView({ behavior: 'smooth' });
         }
 
+        // AI Symptom Checker Functions
+        function toggleSymptomChecker() {
+            const checker = document.getElementById('symptom-checker');
+            const traditional = document.getElementById('traditional-options');
+            
+            if (checker.style.display === 'none') {
+                checker.style.display = 'block';
+                traditional.style.display = 'none';
+            } else {
+                checker.style.display = 'none';
+                traditional.style.display = 'block';
+            }
+        }
+
+        function analyzeSymptoms() {
+            const selectedSymptoms = [];
+            document.querySelectorAll('.symptom-options input:checked').forEach(checkbox => {
+                selectedSymptoms.push(checkbox.value);
+            });
+
+            if (selectedSymptoms.length === 0) {
+                alert('Please select at least one symptom');
+                return;
+            }
+
+            const results = calculateProbabilities(selectedSymptoms);
+            displayResults(results, selectedSymptoms);
+        }
+
+        function calculateProbabilities(symptoms) {
+            const conditionScores = {};
+            let totalSeverity = 0;
+
+            symptoms.forEach(symptom => {
+                const symptomData = symptomDatabase[symptom];
+                if (symptomData) {
+                    totalSeverity += symptomData.severity;
+                    symptomData.conditions.forEach(condition => {
+                        conditionScores[condition] = (conditionScores[condition] || 0) + symptomData.severity;
+                    });
+                }
+            });
+
+            // Convert to probabilities
+            const results = [];
+            for (const [condition, score] of Object.entries(conditionScores)) {
+                results.push({
+                    condition,
+                    probability: Math.min(100, (score / totalSeverity) * 100),
+                    info: conditionInfo[condition]
+                });
+            }
+
+            return results.sort((a, b) => b.probability - a.probability);
+        }
+
+        function displayResults(results, symptoms) {
+            const resultDiv = document.getElementById('analysis-result');
+            let html = `<h3>Analysis Results</h3>
+                        <p>Based on symptoms: <strong>${symptoms.join(', ')}</strong></p>`;
+
+            // Check for emergencies first
+            const emergencies = results.filter(r => r.info && r.info.emergency);
+            if (emergencies.length > 0) {
+                html += `<div class="emergency-alert">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <h4>🚨 EMERGENCY WARNING</h4>
+                            <p>Your symptoms may indicate a serious condition. Please seek immediate medical attention.</p>
+                        </div>`;
+            }
+
+            results.forEach(result => {
+                if (result.info) {
+                    const severityClass = `severity-${result.info.severity.split('-')[0]}`;
+                    html += `<div class="condition-card ${severityClass}">
+                                <h4>${result.info.name} (${Math.round(result.probability)}% match)</h4>
+                                <p>${result.info.description}</p>
+                                <div class="recommendations">
+                                    <strong>Recommendations:</strong>
+                                    <ul>${result.info.recommendations.map(rec => `<li>${rec}</li>`).join('')}</ul>
+                                </div>
+                            </div>`;
+                }
+            });
+
+            html += `<div class="warning">
+                        <strong>Disclaimer:</strong> This analysis is for informational purposes only. 
+                        Always consult with a healthcare professional for proper diagnosis.
+                    </div>`;
+
+            resultDiv.innerHTML = html;
+            resultDiv.style.display = 'block';
+            resultDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Emergency Functions
+        function callEmergency() {
+            if (confirm('Call 911 for emergency services?')) {
+                window.location.href = 'tel:911';
+            }
+        }
+
+        // Medication Reminder Functions
+        function addReminder() {
+            const name = document.getElementById('medName').value;
+            const dosage = document.getElementById('medDosage').value;
+            const time = document.getElementById('medTime').value;
+            
+            if (!name || !dosage || !time) {
+                alert('Please fill all fields');
+                return;
+            }
+            
+            const reminder = {
+                id: Date.now(),
+                name,
+                dosage,
+                time,
+                enabled: true
+            };
+            
+            // Save to localStorage
+            const reminders = JSON.parse(localStorage.getItem('medicationReminders')) || [];
+            reminders.push(reminder);
+            localStorage.setItem('medicationReminders', JSON.stringify(reminders));
+            
+            updateReminderList();
+            scheduleNotification(reminder);
+            
+            // Clear form
+            document.getElementById('medName').value = '';
+            document.getElementById('medDosage').value = '';
+            document.getElementById('medTime').value = '';
+        }
+
+        function updateReminderList() {
+            const reminders = JSON.parse(localStorage.getItem('medicationReminders')) || [];
+            const listDiv = document.getElementById('reminder-list');
+            const medCount = document.getElementById('medCount');
+            
+            medCount.textContent = reminders.length;
+            
+            if (reminders.length === 0) {
+                listDiv.innerHTML = '<p>No reminders set</p>';
+                return;
+            }
+            
+            let html = '<h3>Active Reminders</h3>';
+            reminders.forEach(reminder => {
+                html += `
+                    <div class="reminder-item">
+                        <div>
+                            <strong>${reminder.name}</strong> - ${reminder.dosage} at ${reminder.time}
+                        </div>
+                        <button onclick="deleteReminder(${reminder.id})" class="btn btn-outline">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+            });
+            
+            listDiv.innerHTML = html;
+        }
+
+        function deleteReminder(id) {
+            let reminders = JSON.parse(localStorage.getItem('medicationReminders')) || [];
+            reminders = reminders.filter(reminder => reminder.id !== id);
+            localStorage.setItem('medicationReminders', JSON.stringify(reminders));
+            updateReminderList();
+        }
+
+        function scheduleNotification(reminder) {
+            // This would integrate with browser notifications
+            if ('Notification' in window && Notification.permission === 'granted') {
+                const now = new Date();
+                const [hours, minutes] = reminder.time.split(':');
+                const reminderTime = new Date();
+                reminderTime.setHours(hours, minutes, 0, 0);
+                
+                if (reminderTime < now) {
+                    reminderTime.setDate(reminderTime.getDate() + 1);
+                }
+                
+                const timeout = reminderTime.getTime() - now.getTime();
+                
+                setTimeout(() => {
+                    new Notification('Medication Reminder', {
+                        body: `Time to take ${reminder.name} (${reminder.dosage})`,
+                        icon: '/icon-192.png'
+                    });
+                }, timeout);
+            }
+        }
+
+        // PWA Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(function(registration) {
+                        console.log('ServiceWorker registration successful');
+                    })
+                    .catch(function(error) {
+                        console.log('ServiceWorker registration failed: ', error);
+                    });
+            });
+        }
+
+        // Request notification permission
+        if ('Notification' in window) {
+            Notification.requestPermission();
+        }
+
         // Check if user is already logged in
         window.addEventListener('DOMContentLoaded', function() {
             const savedUser = localStorage.getItem('currentHpCheckUser');
@@ -570,7 +932,46 @@
             } else {
                 showPage('login');
             }
+            
+            // Load reminders
+            updateReminderList();
         });
-    </script>
+
+        // Add to Home Screen functionality
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            showInstallPromotion();
+        });
+
+        function showInstallPromotion() {
+            const installDiv = document.createElement('div');
+            installDiv.className = 'install-promotion';
+            installDiv.innerHTML = `
+                <div style="background: var(--primary); color: white; padding: 15px; border-radius: 10px; margin: 20px 0; text-align: center;">
+                    <p>Install HpCheck for quick access!</p>
+                    <button onclick="installApp()" class="btn" style="background: white; color: var(--primary);">Install App</button>
+                </div>
+            `;
+            document.querySelector('.container').prepend(installDiv);
+        }
+
+        function installApp() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('User accepted install');
+                    }
+                    deferredPrompt = null;
+                }); 
+            }
+        }
+
+</script>
+    
 </body>
 </html>
+
+
